@@ -6,6 +6,8 @@ document.getElementById("searchQuery").addEventListener(
     const alertBox = document.getElementById("alert");
     const loadingIndicator = document.getElementById("loading");
 
+    console.log("Input changed. Query:", query);
+
     if (!query) {
       alertBox.style.display = "none";
       newsContainer.innerHTML = "";
@@ -19,6 +21,8 @@ document.getElementById("searchQuery").addEventListener(
     const apiKey = "13565b3eae304232ba7e66d4499ac7e3";
     const url = `https://newsapi.org/v2/everything?q=${query}&language=id&apiKey=${apiKey}`;
 
+    console.log("Fetching data from API:", url);
+
     try {
       const response = await fetch(url);
       if (response.status === 426) {
@@ -31,7 +35,9 @@ document.getElementById("searchQuery").addEventListener(
       if (!data.articles || data.articles.length === 0) {
         alertBox.style.display = "block";
         alertBox.textContent = "Berita tidak ditemukan.";
+        console.log("No articles found.");
       } else {
+        console.log("Articles found:", data.articles.length);
         data.articles.forEach((article) => {
           const articleHTML = `
             <div class="col-md-4">
@@ -46,6 +52,7 @@ document.getElementById("searchQuery").addEventListener(
             </div>
           `;
           newsContainer.innerHTML += articleHTML;
+          console.log("Article added to the container:", article.title);
         });
       }
     } catch (error) {
@@ -55,6 +62,7 @@ document.getElementById("searchQuery").addEventListener(
         alertBox.textContent = "API key memerlukan peningkatan versi. Silakan periksa status langganan Anda.";
       } else {
         alertBox.textContent = "Terjadi kesalahan saat mengambil data. Coba lagi nanti.";
+        console.log("Error fetching data:", error);
       }
     }
   }, 500)
