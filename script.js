@@ -19,7 +19,7 @@ document.getElementById("searchForm").addEventListener("submit", async function 
   alertBox.style.display = "none";
   newsContainer.innerHTML = "";
 
-  const apiKey = "13565b3eae304232ba7e66d4499ac7e3";
+  const apiKey = "13565b3eae304232ba7e66d4499ac7e3"; // Pastikan API key ini valid dan memiliki izin yang cukup
   const url = `https://newsapi.org/v2/everything?q=${query}&language=id&apiKey=${apiKey}`;
 
   console.log("Fetching data from API:", url);
@@ -60,7 +60,11 @@ document.getElementById("searchForm").addEventListener("submit", async function 
   } catch (error) {
     loadingIndicator.style.display = "none";
     alertBox.style.display = "block";
-    alertBox.textContent = "Terjadi kesalahan saat mengambil data. Coba lagi nanti.";
+    if (error.message === "API key requires an upgrade.") {
+      alertBox.textContent = "API key memerlukan peningkatan versi. Silakan periksa status langganan Anda.";
+    } else {
+      alertBox.textContent = "Terjadi kesalahan saat mengambil data. Coba lagi nanti.";
+    }
     console.log("Error fetching data:", error);
   }
 });
